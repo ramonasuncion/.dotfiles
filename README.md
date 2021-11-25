@@ -11,6 +11,7 @@ https://github.com/RamonAsuncion/.dotfiles.git
 # Symlinks to home directory
 ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 
 # Install HomeBrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
