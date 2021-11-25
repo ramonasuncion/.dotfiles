@@ -1,0 +1,32 @@
+# This is Git's per-user configuration file.
+[user]
+	name = "Ramon Asuncion"
+	username = "RamonAsuncion"
+	email = asuncionbatista@gmail.com
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+
+[core]
+	editor = micro
+
+[web]
+	browser = firefox
+
+[alias]
+	c = commit 
+	cm = commit -m 
+	cl = clone 
+	d = diff 
+	f = fetch
+	m = merge 
+	o = checkout 
+	ob = checkout -b 
+	ps = push 
+	pl = pull 
+	rb = rebase 
+	s = status 
+	
