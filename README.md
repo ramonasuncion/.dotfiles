@@ -34,6 +34,6 @@ brew bundle --file ~/.dotfiles/Brewfile
 
 Made by me. 
 
-# Thanks to
+### Thanks to
 
 Matt Compton and helping me out figure out problems I had with the .zshrc file. 
