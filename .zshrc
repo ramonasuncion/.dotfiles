@@ -12,8 +12,6 @@ plugins=(
 	git
 	zsh-syntax-highlighting 
 	zsh-autosuggestions
-	dotenv
-	autojump
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -35,3 +33,7 @@ alias tmuxreload="tmux source-file ~/.tmux.conf"
 alias bucknell.wtf="ssh ramon@bucknell.wtf"
 alias pi="ssh pi@134.82.137.7" # Raspberry Pi @ Bucknell.edu network
 alias zshreload="source ~/.zshrc"
+alias python="python3"
+
+
+
