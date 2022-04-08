@@ -29,12 +29,5 @@ fi
 alias ls="ls -la --color=auto"
 alias tmuxreload="tmux source-file ~/.tmux.conf"
 alias zshreload="source ~/.zshrc"
-<<<<<<< HEAD
 alias python="python3"
 
-
-
-=======
-
-neofetch
->>>>>>> fab81d07c335a36530f38dca58a65bde7b847f5c
