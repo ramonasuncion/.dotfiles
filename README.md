@@ -1,5 +1,7 @@
 # Ramon's  Dotfiles
-Currently working on a MacOS system. 
+Currently working on a MacOS system.
+I'm hoping to add my linux system files into this repository.
+
 
 ## Installation 
 

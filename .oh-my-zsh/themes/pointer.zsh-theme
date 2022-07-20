@@ -1,9 +1,4 @@
-if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="yellow"; fi
-
-local user="%{$fg[yellow]%}%n@%{$fg[cyan]%}%m%{$reset_color%}"
-
-PROMPT="${user} %{$fg[$NCOLOR]%}%c ➤ %{$reset_color%}"
-RPROMPT='%{$fg[$NCOLOR]%} $(git_prompt_info)%{$reset_color%}'
+PROMPT="%c ➤ %{$reset_color%}"
 
 ZSH_THEME_GIT_PROMPT_PREFIX="git:"
 ZSH_THEME_GIT_PROMPT_SUFFIX=""
