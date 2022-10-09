@@ -1,21 +1,10 @@
-# This is Git's per-user configuration file.
 [user]
 	name = "Ramon Asuncion"
 	username = "RamonAsuncion"
 	email = asuncionbatista@gmail.com
 
-	
+[init]
+	defaultBranch = main
+
 [alias]
-	c = commit 
-	cm = commit -m 
-	cl = clone 
-	d = diff 
-	f = fetch
-	m = merge 
-	o = checkout 
-	ob = checkout -b 
-	ps = push 
-	pl = pull 
-	rb = rebase 
-	s = status 
-	
+    tree = log --graph --decorate --pretty=oneline --abbrev-commit
