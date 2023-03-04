@@ -8,6 +8,12 @@ HISTSIZE=5000
 alias ..="cd .."
 alias ...="cd ../../"
 alias cd=_cd
+alias readme='readme() { local file=${1:-README.md}; lowdown -T term "$file" | less -R; }; readme'
+
+
+alias bucknell='doas wpa_supplicant -c /etc/wpa_supplicant.conf -i iwm0 &'
+alias python='python3'
+alias rm='rm -rvf '
 
 # Define the prefix and suffix for the git prompt.
 GIT_PROMPT_PREFIX="git:"
@@ -57,4 +63,4 @@ git_prompt_info() {
 }
 
 # Primary prompt which is displayed before each command.
-PS1='$(printf "%*s\r%s" $(( COLUMNS-1 )) "$(git_prompt_info)" "$_pwd ➤ ")'
+PS1='$(printf "%*s\r%s" $(( COLUMNS-1 )) "$(git_prompt_info)" "$_pwd $ ")'
