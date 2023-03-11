@@ -1,0 +1,28 @@
+! $OpenBSD: Xresources.in,v 1.3 2020/06/28 15:38:34 matthieu Exp $
+login.Login.allowRootLogin: false
+
+# Login response.
+xlogin.Login.echoPasswd: true
+xlogin.Login.fail: You idiot.
+xlogin.Login.greeting:
+
+! Dimensions and Positioning of the login box.
+xlogin.Login.height:            250
+xlogin.Login.width:             450
+xlogin.Login.y:                 320
+xlogin*borderWidth:             0
+xlogin*frameWidth:              0
+xlogin*innerFramesWidth:        0
+
+! Color scheme.
+xlogin.Login.background:        #9fcebe
+xlogin.Login.foreground:        #474a42
+xlogin.Login.failColor:         #b00035
+xlogin.Login.inpColor:          #9fcebe
+xlogin.Login.promptColor:       #474a42
+xlogin.Login.hiColor:           #9fcebe
+xlogin.Login.shdColor:          #9fcebe
+
+xlogin.Login.face:              Iosevka-15
+xlogin.Login.failFace:          Iosevka-15
+xlogin.Login.promptFace:        Iosevka-15
