@@ -5,11 +5,6 @@ local cmd = vim.cmd
 -- block cursor
 opt.guicursor = ""
 
--- enter takes to functions defintion with gd.
-cmd([[
-nnoremap <leader>gd <cmd>lua vim.lsp.buf.definition()<CR>
-]])
-
 -- persistent undo
 opt.udf=true
 opt.undodir=vim.fn.stdpath('config') .. '/undo'
