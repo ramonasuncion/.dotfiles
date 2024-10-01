@@ -25,41 +25,41 @@ while IFS= read -r line; do
     continue
   fi
 
-    # Capture sections [ Example ].
-    if [[ "$line" =~ ^\[.*\]$ ]]; then
-      section=$(echo "$line" | tr -d '[]')
-      continue
-    fi
+  # Capture sections [ Example ].
+  if [[ "$line" =~ ^\[.*\]$ ]]; then
+    section=$(echo "$line" | tr -d '[]')
+    continue
+  fi
 
-    # Get the key and value from each line.
-    key=$(echo "$line" | cut -d '=' -f 1)
-    value=$(echo "$line" | cut -d '=' -f 2-)
+  # Get the key and value from each line.
+  key=$(echo "$line" | cut -d '=' -f 1)
+  value=$(echo "$line" | cut -d '=' -f 2-)
 
-    # Remove leading/trailing whitespaces.
-    key=$(echo "$key" | tr -d '[:space:]')
-    value=$(echo "$value" | tr -d '[:space:]')
+  # Remove leading/trailing whitespaces.
+  key=$(echo "$key" | tr -d '[:space:]')
+  value=$(echo "$value" | tr -d '[:space:]')
 
-    case $key in
-      path)
-        path=$(eval echo "$value")
-        ;;
-      type)
-        link_type="$value"
-        ;;
-      target)
-        target=$(eval echo "$value")
-        ;;
-      *)
-        echo "Unknown key: \"$key\""
-        ;;
-    esac
+  case $key in
+    path)
+      path=$(eval echo "$value")
+      ;;
+    type)
+      link_type="$value"
+      ;;
+    target)
+      target=$(eval echo "$value")
+      ;;
+    *)
+      echo "Unknown key: \"$key\""
+      ;;
+  esac
 
-    # Create the link.
-    if [[ -n "$path" && -n "$target" && -n "$link_type" ]]; then
-      create_link "$path" "$target" "$link_type"
-      path=""
-      target=""
-      link_type=""
-    fi
-  done < "$CONFIG_FILE"
+  # Create the link.
+  if [[ -n "$path" && -n "$target" && -n "$link_type" ]]; then
+    create_link "$path" "$target" "$link_type"
+    path=""
+    target=""
+    link_type=""
+  fi
+done < "$CONFIG_FILE"
 
