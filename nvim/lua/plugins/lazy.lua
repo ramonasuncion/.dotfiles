@@ -68,11 +68,11 @@ lazy.setup({
       },
     },
   },
-  readme = {
-    root = vim.fn.stdpath("state") .. "/lazy/readme",
-    files = { "README.md", "lua/**/README.md" },
-    skip_if_doc_exists = true,
-  },
-  state = vim.fn.stdpath("state") .. "/lazy/state.json",
+  --readme = {
+  --  root = vim.fn.stdpath("state") .. "/lazy/readme",
+  --  files = { "README.md", "lua/**/README.md" },
+  --  skip_if_doc_exists = true,
+  --},
+  --state = vim.fn.stdpath("state") .. "/lazy/state.json",
 })
 
