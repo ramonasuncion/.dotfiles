@@ -26,11 +26,6 @@ opt.listchars:append {
 -- how many lines of history VIM remembers
 opt.history=500
 
--- enable file type plugins
-cmd([[
-filetype plugin on
-]])
-
 -- utf-8 byte sequence
 opt.encoding='utf-8'
 
@@ -51,7 +46,7 @@ opt.mouse='a'
 opt.scl='no'
 
 -- enable clipboard
--- use :help clipboard to setup copy and pasting.
+-- use :help clipboard to setup copy and pasting. (download xclip)
 opt.clipboard:append { 'unnamedplus' }
 
 -- set auto read whne a file is changed from outside
@@ -63,21 +58,23 @@ vim.g.rainbow_active=1
 -- set the cursor property when working in a GUI (gvim)
 opt.guicursor='n-v-c-i:block'
 
--- use spaces instead of tabs
-opt.expandtab=true
-
 -- be smart when using tabs
 opt.smarttab=true
+--opt.cindent=true
+
+--  handle indentation
+opt.autoindent=true
 
 -- 1 tab == 2 spaces
 opt.shiftwidth=2
 opt.tabstop=2
 
+-- use spaces instead of tabs
+opt.expandtab=true
+
 -- line break on 500 characters
 opt.lbr=true
 opt.tw=500
-opt.ai=true
-opt.si=true
 opt.wrap=true
 
 -- set 7 lines to the cursor when moving vertically.
