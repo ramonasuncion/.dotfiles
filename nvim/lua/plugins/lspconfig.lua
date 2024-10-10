@@ -17,7 +17,6 @@ lspconfig.clangd.setup({
     "--inlay-hints",
     "--function-arg-placeholders",
     "--header-insertion-decorators",
-    "--completion-style=detailed",
     "--suggest-missing-includes",
     "--cross-file-rename",
     "--log=info",
