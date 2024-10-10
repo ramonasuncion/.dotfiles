@@ -84,9 +84,19 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 vim.diagnostic.config({ virtual_text = false })
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
   callback = function()
-    if vim.lsp.buf.server_ready() then
+    local bufnr = vim.api.nvim_get_current_buf()
+    if vim.lsp.buf_is_attached(bufnr) then
       vim.diagnostic.open_float()
     end
   end,
+})
+
+-- autocomment new line for multiline comments but not single-line
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {"c", "cpp"},
+    callback = function()
+        vim.opt_local.comments:remove("://")
+        vim.opt_local.comments:append("f://")
+    end
 })
 
