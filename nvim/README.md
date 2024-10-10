@@ -8,7 +8,7 @@ This is a minimal neovim configuration that installs snippet packages to be able
 
 This goes under `$HOME/.config/nvim`.
 
-You can run `checkheatlh` to see if you're missing something.
+You can run `checkhealth` to see if you're missing something.
 
 ## Preview image:
 
