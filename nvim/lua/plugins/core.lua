@@ -24,7 +24,7 @@ local plugins = {
     config = load('lspsignature'),
   },
   {
-    "ibhagwan/fzf-lua",
+    'ibhagwan/fzf-lua',
     cmd = "FzfLua",
     opts = {
       height = 0.9,
@@ -55,7 +55,7 @@ local plugins = {
 }
 
 local ts_parsers = {
-  'c',
+  'c', 'cpp', 'lua', 'vimdoc'
 }
 
 local lsp_servers = {
