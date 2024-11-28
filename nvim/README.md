@@ -12,4 +12,3 @@ You can run `checkhealth` to see if you're missing something.
 
 ## Preview image:
 
-![neovim image](./preview.png)
