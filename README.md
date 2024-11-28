@@ -5,7 +5,7 @@ Configuration files used throughout my different systems.
 ## Run
 
 ```
-$ ./deploy.sh
+$ ./link_creator.sh
 ```
 
 ## Software
@@ -13,3 +13,4 @@ $ ./deploy.sh
 - Neovim
 - Zsh w/ Oh My Zsh
 - Git
+- Tmux
