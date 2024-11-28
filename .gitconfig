@@ -1,6 +1,16 @@
 [user]
-  email =
   name =
-
+  email =
 [init]
-    defaultBranch = main
+  defaultBranch = main
+[alias]
+  tree = log --graph --decorate --pretty=oneline --abbrev-commit
+  unstage = reset HEAD --
+  last = log -1 HEAD --stat
+  amend = commit --amend --no-edit
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+[fetch]
+  prune = true
