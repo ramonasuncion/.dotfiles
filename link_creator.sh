@@ -5,6 +5,8 @@ SCRIPT_VERSION="1.0"
 DEFAULT_CONFIG_FILE="config.ini"
 CONFIG_FILE="$DEFAULT_CONFIG_FILE"
 
+# set -x
+
 # Directory where script loaded.
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
@@ -61,8 +63,13 @@ create_link() {
   local target=$2
   local link_type=$3
 
+  if [ -z "$target" ]; then
+    echo "Error: target is empty!"
+    return 1
+  fi
+
   if [ "$link_type" = "symlink" ]; then
-    if [ -l "$target" ] && [ "$(readlink "$target")" = "$path" ]; then
+    if [ -L "$target" ] && [ "$(readlink '$target')" = "$path" ]; then
       echo "Symlink '$target' already exists! Skipping..."
       return
     elif [ -e "$target" ]; then # file existence, ignore type.
