@@ -5,8 +5,6 @@ SCRIPT_VERSION="1.0"
 DEFAULT_CONFIG_FILE="config.ini"
 CONFIG_FILE="$DEFAULT_CONFIG_FILE"
 
-# set -x
-
 # Directory where script loaded.
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
@@ -19,11 +17,7 @@ display_help() {
   echo "  --config FILE  Specify a custom configuration file"
   echo ""
   echo "This script reads a config file and creates symlinks or hardlinks based on the configuration."
-  echo "The configuration file should specify 'path', 'type', and 'target'."
-}
-
-display_version() {
-  echo "$SCRIPT_NAME version $SCRIPT_VERSION"
+  echo "The configuration file should specify 'path', 'type', 'target' and optional 'script'."
 }
 
 for arg in "$@"; do
@@ -33,7 +27,7 @@ for arg in "$@"; do
       exit 0
       ;;
     --version)
-      display_version
+      echo "$SCRIPT_NAME version $SCRIPT_VERSION"
       exit 0
       ;;
     --config)
@@ -62,6 +56,7 @@ create_link() {
   local path=$1
   local target=$2
   local link_type=$3
+  local script=$4
 
   if [ -z "$target" ]; then
     echo "Error: target is empty!"
@@ -87,6 +82,13 @@ create_link() {
     echo "Unsupported link type: \"$link_type\""
     exit 1
   fi
+
+  # TODO: Install repos.
+
+  if [ -n "$script" ] && [ -f "$script" ]; then
+    echo "Running post-link script: $script"
+    bash $script
+  fi
 }
 
 while IFS= read -r line; do
@@ -98,6 +100,10 @@ while IFS= read -r line; do
   # Capture sections [ Example ].
   if [[ "$line" =~ ^\[.*\]$ ]]; then
     section=$(echo "$line" | tr -d '[]')
+    path=""
+    target=""
+    link_type=""
+    script=""
     continue
   fi
 
@@ -119,6 +125,9 @@ while IFS= read -r line; do
     target)
       target=$(eval echo "$value")
       ;;
+    script)
+      script="$value"
+      ;;
     *)
       echo "Unknown key: \"$key\""
       ;;
@@ -126,10 +135,10 @@ while IFS= read -r line; do
 
   # Create the link.
   if [[ -n "$path" && -n "$target" && -n "$link_type" ]]; then
-    create_link "$path" "$target" "$link_type"
+    create_link "$path" "$target" "$link_type" "$script"
     path=""
     target=""
     link_type=""
+    script=""
   fi
 done < "$CONFIG_FILE"
-
