@@ -14,7 +14,7 @@ Options:
   --config FILE  Specify a custom configuration file
 
 This script reads a config file and creates symlinks or hardlinks based on the configuration.
-The configuration file should specify 'path', 'type', and 'target'.
+The configuration file should specify 'path', 'type', and 'target', and optional 'script'.
 ```
 
 ## Software
