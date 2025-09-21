@@ -1,8 +1,8 @@
 -- Setup language servers.
-local lspconfig = require('lspconfig')
+-- local lspconfig = require('lspconfig')
 
 -- C
-lspconfig.clangd.setup({
+vim.lsp.config('clangd', {
   on_attach = on_attach,
   cmd = {
     "clangd",

@@ -1,7 +1,6 @@
 -- treesitter.nvim
 local treesitter = require("nvim-treesitter.configs")
 
--- FIXME: AutoInstall function.
 parsers = require('plugins.core').ts_parsers
 
 treesitter.setup({
