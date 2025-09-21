@@ -9,7 +9,7 @@ end
 -- modes: https://neovim.io/doc/user/map.html#map-modes
 
 -- leader
-vim.g.mapleader=","
+-- vim.g.mapleader=","
 
 -- disable arrow keys
 map('', '<up>', '<nop>')

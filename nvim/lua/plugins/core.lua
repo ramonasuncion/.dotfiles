@@ -6,7 +6,9 @@ end
 
 local plugins = {
   {
-    'tpope/vim-surround',
+    'echasnovski/mini.surround',
+    config = load('surround'),
+    version = false,
   },
   {
     'neovim/nvim-lspconfig',
@@ -48,9 +50,6 @@ local plugins = {
       { "<C-d>", "<cmd>lua require('fzf-lua').files()<cr>" },
       { "<C-S-d>", "<cmd>lua require('fzf-lua').git_files()<cr>" },
     },
-  },
-  {
-    'BurntSushi/ripgrep',
   },
 }
 

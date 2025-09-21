@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Configuration
 SCRIPT_NAME="LinkCreator"
 SCRIPT_VERSION="1.0"
 DEFAULT_CONFIG_FILE="config.ini"
@@ -15,6 +16,7 @@ display_help() {
   echo "  --help         Show this help message"
   echo "  --version      Show the version and name of the script"
   echo "  --config FILE  Specify a custom configuration file"
+  echo "  --preview      Test your config without making changes"
   echo ""
   echo "This script reads a config file and creates symlinks or hardlinks based on the configuration."
   echo "The configuration file should specify 'path', 'type', 'target' and optional 'script'."
@@ -83,7 +85,7 @@ create_link() {
     exit 1
   fi
 
-  # TODO: Install repos.
+  # TODO: Install repos
 
   if [ -n "$script" ] && [ -f "$script" ]; then
     echo "Running post-link script: $script"
