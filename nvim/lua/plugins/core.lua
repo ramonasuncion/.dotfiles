@@ -1,66 +1,41 @@
+-- init.lua
 local function load(package)
   return function()
     require('plugins.' .. package)
   end
 end
 
-local plugins = {
+vim.pack.add({
   {
-    'nvim-mini/mini.surround', version = '*'
+    src = 'https://github.com/ray-x/lsp_signature.nvim.git',
+    name = 'lsp_signature.nvim',
+    load = load('lspsignature')
   },
   {
-    'nvim-treesitter/nvim-treesitter',
-    event = { 'BufReadPre', 'BufNewFile' },
-    build = ':TSUpdate',
-    lazy = false,
-    config = load('treesitter'),
+    src = 'https://github.com/nvim-treesitter/nvim-treesitter',
+    name = 'nvim-treesitter',
+    version = 'main',
+    data = { build = ':TSUpdate' },
+    load = load('treesitter'),
   },
   {
-    'ray-x/lsp_signature.nvim',
-    config = load('lspsignature'),
+    src = 'https://github.com/ibhagwan/fzf-lua',
+    name = 'fzf-lua',
+    version = 'main',
+    load = load('fzf'),
   },
   {
-    'ibhagwan/fzf-lua',
-    cmd = "FzfLua",
-    opts = {
-      height = 0.9,
-      width = 0.7,
-      winopts = {
-        border = "single",
-        preview = {
-          layout = "horizontal",
-          vertical = "down:65%",
-          border = "border",
-        },
-      },
-      keymap = {
-        builtin = {
-          ["<S-j>"] = "preview-page-down", -- Shift + j
-          ["<S-k>"] = "preview-page-up", -- Shift + k
-        },
-      },
-    },
-    keys = {
-      { "<C-d>", "<cmd>lua require('fzf-lua').files()<cr>" },
-      { "<C-S-d>", "<cmd>lua require('fzf-lua').git_files()<cr>" },
-    },
+    src = 'https://github.com/nvim-mini/mini.surround',
+    name = 'mini-surround',
+    version = 'stable',
   },
-  {
-    'BurntSushi/ripgrep',
-  },
-}
+})
 
-local ts_parsers = {
-  'c', 'cpp', 'lua', 'vimdoc'
-}
-
-local lsp_servers = {
-  'typos_lsp',
-}
+local ts_parsers = { 'c', 'cpp', 'lua', 'vimdoc' }
+local lsp_servers = { 'typos_lsp' }
 
 return {
-  plugins = plugins,
-  lsp_servers = lsp_servers,
   ts_parsers = ts_parsers,
+  lsp_servers = lsp_servers,
 }
 
