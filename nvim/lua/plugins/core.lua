@@ -6,18 +6,14 @@ end
 
 local plugins = {
   {
-    'tpope/vim-surround',
-  },
-  {
-    'neovim/nvim-lspconfig',
-    config = load('lspconfig'),
-    event = { 'BufReadPre', 'BufNewFile' },
+    'nvim-mini/mini.surround', version = '*'
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = load('treesitter'),
     event = { 'BufReadPre', 'BufNewFile' },
+    build = ':TSUpdate',
+    lazy = false,
+    config = load('treesitter'),
   },
   {
     'ray-x/lsp_signature.nvim',
