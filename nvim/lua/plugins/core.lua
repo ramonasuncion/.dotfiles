@@ -1,37 +1,21 @@
--- init.lua
-local function load(package)
-  return function()
-    require('plugins.' .. package)
-  end
-end
-
+-- lua/plugins/core.lua
 vim.pack.add({
-  {
-    src = 'https://github.com/ray-x/lsp_signature.nvim.git',
-    name = 'lsp_signature.nvim',
-    load = load('lspsignature')
-  },
-  {
-    src = 'https://github.com/nvim-treesitter/nvim-treesitter',
-    name = 'nvim-treesitter',
-    version = 'main',
-    data = { build = ':TSUpdate' },
-    load = load('treesitter'),
-  },
-  {
-    src = 'https://github.com/ibhagwan/fzf-lua',
-    name = 'fzf-lua',
-    version = 'main',
-    load = load('fzf'),
-  },
-  {
-    src = 'https://github.com/nvim-mini/mini.surround',
-    name = 'mini-surround',
-    version = 'stable',
-  },
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
+  { src = "https://github.com/ibhagwan/fzf-lua", version = "main" },
+  { src = "https://github.com/nvim-mini/mini.surround", version = "main" },
 })
 
-local ts_parsers = { 'c', 'cpp', 'lua', 'vimdoc' }
+local function load(pkg)
+  pcall(require, "plugins." .. pkg)
+end
+
+load("lspconfig")
+load("treesitter")
+load("fzf")
+load("mini_surround")
+
+local ts_parsers = { 'c', 'cpp' }
 local lsp_servers = { 'typos_lsp' }
 
 return {
