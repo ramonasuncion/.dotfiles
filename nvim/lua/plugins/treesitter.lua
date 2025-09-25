@@ -1,22 +1,11 @@
--- treesitter.nvim
+-- lua/plugins/treesitter.nvim
 local treesitter = require("nvim-treesitter.configs")
 
 parsers = require('plugins.core').ts_parsers
 
 treesitter.setup({
   ensure_installed = parsers,
-  highlight = {
-    enable = true,
-    disable = { "c" },
-    additional_vim_regex_highlighting = false,
-  },
-  custom_captures = {
-    ["include"] = "Include",
-    ["null"] = "Null",
-  },
-  autopairs = {
-    enable = true,
-  },
+  highlight = { enable = true },
   indent = { enable = true },
 })
 

@@ -20,5 +20,6 @@ fzf.setup({
   },
 })
 
+-- plugin-specific keymaps
 vim.keymap.set("n", "<C-d>", fzf.files)
 vim.keymap.set("n", "<C-S-d>", fzf.git_files)
