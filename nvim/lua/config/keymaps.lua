@@ -1,38 +1,21 @@
-local function map(mode, lhs, rhs, opts)
-  local options = { noremap=true, silent=true }
-  if opts then
-    options = vim.tbl_extend('force', options, opts)
-  end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
--- modes: https://neovim.io/doc/user/map.html#map-modes
-
 -- leader
 vim.g.mapleader=","
 
--- disable arrow keys
-map('', '<up>', '<nop>')
-map('', '<down>', '<nop>')
-map('', '<left>', '<nop>')
-map('', '<right>', '<nop>')
-
 -- move around splits (Ctrl+{j,k,l,h})
-map('n', '<C-h>', '<C-w>h')
-map('n', '<C-j>', '<C-w>j')
-map('n', '<C-k>', '<C-w>k')
-map('n', '<C-l>', '<C-w>l')
+vim.keymap.set('n', '<C-h>', '<C-w>h', { silent = true, desc = 'Move to left split' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { silent = true, desc = 'Move to below split' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { silent = true, desc = 'Move to above split' })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { silent = true, desc = 'Move to right split' })
 
 -- reload vim
-map('n', '<leader>r', ':so %<CR>')
+vim.keymap.set('n', '<leader>r', '<cmd>so %<cr>', { silent = true, desc = 'Reload config' })
 
 -- fast saving
-map('n', '<leader>s', ':w<CR>')
+vim.keymap.set('n', '<leader>s', '<cmd>w<cr>', { silent = true, desc = 'Save file' })
 
 -- quit
-map('n', '<leader>q', ':qa!<CR>')
+vim.keymap.set('n', '<leader>q', '<cmd>qa!<cr>', { silent = true, desc = 'Quit all' })
 
 -- clear search
-map('n', '<leader>c', ':nohl<CR>')
-
+vim.keymap.set('n', '<leader>c', '<cmd>nohl<cr>', { silent = true, desc = 'Clear search' })
 
