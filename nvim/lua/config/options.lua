@@ -6,7 +6,7 @@ local cmd = vim.cmd
 opt.guicursor = ""
 
 -- persistent undo
-opt.udf=true
+opt.undofile=true
 opt.undodir=vim.fn.stdpath('config') .. '/undo'
 
 -- clipboard
@@ -26,9 +26,6 @@ opt.listchars:append {
 -- how many lines of history VIM remembers
 opt.history=500
 
--- utf-8 byte sequence
-opt.encoding='utf-8'
-
 -- potential sever issues with backup files
 opt.backup=false
 opt.writebackup=false
@@ -45,22 +42,11 @@ opt.mouse='a'
 -- sign column
 opt.scl='no'
 
--- enable clipboard
--- use :help clipboard to setup copy and pasting. (download xclip)
-opt.clipboard:append { 'unnamedplus' }
-
 -- set auto read whne a file is changed from outside
 opt.autoread=true
 
--- toggle rainbow parentheses
-vim.g.rainbow_active=1
-
--- set the cursor property when working in a GUI (gvim)
-opt.guicursor='n-v-c-i:block'
-
 -- be smart when using tabs
 opt.smarttab=true
---opt.cindent=true
 
 --  handle indentation
 opt.autoindent=true
@@ -80,17 +66,11 @@ opt.wrap=true
 -- set 7 lines to the cursor when moving vertically.
 opt.so=7
 
--- turn on wild menu
-opt.wildmenu=true
-
--- always show current position
-opt.ruler=true
-
 -- height of the command bar
 opt.cmdheight=1
 
 -- buffer becomes hidden when abandoned
-opt.hid=true
+opt.hidden=true
 
 -- configure backspace
 opt.backspace:append { 'eol', 'start', 'indent' }
@@ -125,9 +105,6 @@ opt.incsearch=true
 
 -- do not redraw while executing macros (use if you frequently replay macros)
 opt.lazyredraw=true
-
--- magic mode for regular expressions (default=true)
-opt.magic=true
 
 -- moving to matching braces
 opt.showmatch=true

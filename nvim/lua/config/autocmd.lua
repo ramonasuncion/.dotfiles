@@ -93,10 +93,20 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
 
 -- autocomment new line for multiline comments but not single-line
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = {"c", "cpp"},
-    callback = function()
-        vim.opt_local.comments:remove("://")
-        vim.opt_local.comments:append("f://")
+  pattern = {"c", "cpp"},
+  callback = function()
+    vim.opt_local.comments:remove("://")
+    vim.opt_local.comments:append("f://")
+  end
+})
+
+-- run TSUpdate when nvim-treesitter updates via vim.pack
+vim.api.nvim_create_autocmd('PackChanged', {
+  group = vim.api.nvim_create_augroup('nvim-treesitter-pack-changed-update-handler', { clear = true }),
+  callback = function(event)
+    if event.data.kind == 'update' and event.data.spec.name == 'nvim-treesitter' then
+      pcall(vim.cmd, 'TSUpdate')
     end
+  end,
 })
 

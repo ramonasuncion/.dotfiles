@@ -1,70 +1,25 @@
-local function load(package)
-  return function()
-    require('plugins.' .. package)
-  end
+-- lua/plugins/core.lua
+vim.pack.add({
+  { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
+  { src = "https://github.com/ibhagwan/fzf-lua", version = "main" },
+  { src = "https://github.com/nvim-mini/mini.surround", version = "main" },
+})
+
+local function load(pkg)
+  pcall(require, "plugins." .. pkg)
 end
 
-local plugins = {
-  {
-    'tpope/vim-surround',
-  },
-  {
-    'neovim/nvim-lspconfig',
-    config = load('lspconfig'),
-    event = { 'BufReadPre', 'BufNewFile' },
-  },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = load('treesitter'),
-    event = { 'BufReadPre', 'BufNewFile' },
-  },
-  {
-    'ray-x/lsp_signature.nvim',
-    config = load('lspsignature'),
-  },
-  {
-    'ibhagwan/fzf-lua',
-    cmd = "FzfLua",
-    opts = {
-      height = 0.9,
-      width = 0.7,
-      winopts = {
-        border = "single",
-        preview = {
-          layout = "horizontal",
-          vertical = "down:65%",
-          border = "border",
-        },
-      },
-      keymap = {
-        builtin = {
-          ["<S-j>"] = "preview-page-down", -- Shift + j
-          ["<S-k>"] = "preview-page-up", -- Shift + k
-        },
-      },
-    },
-    keys = {
-      { "<C-d>", "<cmd>lua require('fzf-lua').files()<cr>" },
-      { "<C-S-d>", "<cmd>lua require('fzf-lua').git_files()<cr>" },
-    },
-  },
-  {
-    'BurntSushi/ripgrep',
-  },
-}
+load("lspconfig")
+load("treesitter")
+load("fzf")
+load("mini_surround")
 
-local ts_parsers = {
-  'c', 'cpp', 'lua', 'vimdoc'
-}
-
-local lsp_servers = {
-  'typos_lsp',
-}
+local ts_parsers = { 'c', 'cpp' }
+local lsp_servers = { 'typos_lsp' }
 
 return {
-  plugins = plugins,
-  lsp_servers = lsp_servers,
   ts_parsers = ts_parsers,
+  lsp_servers = lsp_servers,
 }
 

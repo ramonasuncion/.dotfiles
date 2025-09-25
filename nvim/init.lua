@@ -1,5 +1,4 @@
-require('config.colorscheme')
 require('config.options')
 require('config.autocmd')
-require('config.filetype')
-require('plugins.lazy')
+require('config.keymaps')
+require('plugins.core')
