@@ -19,3 +19,8 @@ vim.keymap.set('n', '<leader>q', '<cmd>qa!<cr>', { silent = true, desc = 'Quit a
 -- clear search
 vim.keymap.set('n', '<leader>c', '<cmd>nohl<cr>', { silent = true, desc = 'Clear search' })
 
+-- keep centered
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-f>', '<C-f>zz')
+vim.keymap.set('n', '<C-b>', '<C-b>zz')
