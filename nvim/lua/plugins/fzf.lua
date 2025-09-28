@@ -21,5 +21,6 @@ fzf.setup({
 })
 
 -- plugin-specific keymaps
-vim.keymap.set("n", "<C-d>", fzf.files)
-vim.keymap.set("n", "<C-S-d>", fzf.git_files)
+vim.keymap.set("n", "<leader>f", fzf.files)
+vim.keymap.set("n", "<leader>g", fzf.git_files)
+vim.keymap.set("n", "<leader>m", fzf.marks)
