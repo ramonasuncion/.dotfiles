@@ -1,0 +1,19 @@
+#######################################
+#            STARTUP                  #
+#######################################
+
+# Start polybar
+exec_always --no-startup-id ~/.config/polybar/launch.sh 
+
+# Start XDG autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# Start xss-lock
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# start nm-applet system tray
+exec --no-startup-id nm-applet
+
+# Start terminal
+exec --no-startup-id i3-msg 'workspace 1; exec urxvt -e sh -c 'neofetch;while true; do sleep 1; done'
+
