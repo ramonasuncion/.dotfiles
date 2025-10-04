@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 SCRIPT_NAME="LinkCreator"
 SCRIPT_VERSION="1.0"
@@ -15,7 +15,7 @@ display_help() {
   echo "  --help         Show this help message"
   echo "  --version      Show the version and name of the script"
   echo "  --config FILE  Specify a custom configuration file"
-  echo ""
+  echo "  --preview      Show a preview where files will be moved"
   echo "This script reads a config file and creates symlinks or hardlinks based on the configuration."
   echo "The configuration file should specify 'path', 'type', 'target' and optional 'script'."
 }
@@ -39,6 +39,10 @@ for arg in "$@"; do
       fi
       break
       ;;
+    --preview)
+      PREVIEW_MODE=0
+      break
+      ;;
     *)
       echo "Unknown option: $arg"
       display_help
@@ -51,6 +55,29 @@ if [ ! -f "$CONFIG_FILE" ]; then
   echo "Config file '$CONFIG_FILE' not found."
   exit 1
 fi
+
+show_preview() {
+  local path=$1
+  local target=$2
+  local link_type=$3
+  local script=$4
+
+  if [[ -z "$path" || -z "$target" || -z "$link_type" ]]; then
+    return
+  fi
+
+  if [ "$link_type" = "symlink" ]; then
+    echo "$target -> $path"
+  fi
+
+  if [ "$link_type" = "hardlink" ]; then
+    echo "$target"
+  fi
+
+  if [ -n "$script" ]; then
+    echo "bash $script"
+  fi
+}
 
 create_link() {
   local path=$1
@@ -134,11 +161,13 @@ while IFS= read -r line; do
   esac
 
   # Create the link.
-  if [[ -n "$path" && -n "$target" && -n "$link_type" ]]; then
+  if [[ -n "$path" && -n "$target" && -n "$link_type" && "$PREVIEW_MODE" -ne 0 ]]; then
     create_link "$path" "$target" "$link_type" "$script"
     path=""
     target=""
     link_type=""
     script=""
+  else
+    show_preview "$path" "$target" "$link_type" "$script"
   fi
 done < "$CONFIG_FILE"
