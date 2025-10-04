@@ -66,11 +66,12 @@ show_preview() {
     return
   fi
 
-  if [ "$link_type" = "symlink" ]; then
+  // FIXME: Running twice when script exists
+  if [[ "$link_type" = "symlink" && -z "$script" ]]; then
     echo "$target -> $path"
   fi
 
-  if [ "$link_type" = "hardlink" ]; then
+  if [[ "$link_type" = "hardlink" && -z "$script" ]]; then
     echo "$target"
   fi
 
