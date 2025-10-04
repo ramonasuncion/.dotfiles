@@ -12,25 +12,25 @@ display_help() {
   echo "Usage: $SCRIPT_NAME [OPTIONS]"
   echo ""
   echo "Options:"
-  echo "  --help         Show this help message"
-  echo "  --version      Show the version and name of the script"
-  echo "  --config FILE  Specify a custom configuration file"
-  echo "  --preview      Show a preview where files will be moved"
+  echo "  -h --help         Show this help message"
+  echo "  -v --version      Show the version and name of the script"
+  echo "  -c --config FILE  Specify a custom configuration file"
+  echo "  -p --preview      Show a preview where files will be moved"
   echo "This script reads a config file and creates symlinks or hardlinks based on the configuration."
   echo "The configuration file should specify 'path', 'type', 'target' and optional 'script'."
 }
 
 for arg in "$@"; do
   case $arg in
-    --help)
+    -h |--help)
       display_help
       exit 0
       ;;
-    --version)
+    -v | --version)
       echo "$SCRIPT_NAME version $SCRIPT_VERSION"
       exit 0
       ;;
-    --config)
+    -c | --config)
       shift
       CONFIG_FILE="$1"
       if [ ! -f "$CONFIG_FILE" ]; then
@@ -39,7 +39,7 @@ for arg in "$@"; do
       fi
       break
       ;;
-    --preview)
+    -p | --preview)
       PREVIEW_MODE=0
       break
       ;;
@@ -66,7 +66,7 @@ show_preview() {
     return
   fi
 
-  // FIXME: Running twice when script exists
+  # FIXME: Running twice when script exists
   if [[ "$link_type" = "symlink" && -z "$script" ]]; then
     echo "$target -> $path"
   fi
