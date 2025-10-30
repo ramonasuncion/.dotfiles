@@ -110,3 +110,8 @@ opt.lazyredraw=true
 opt.showmatch=true
 opt.matchtime=2
 
+-- autocomplete related
+opt.complete='.,o'
+opt.completeopt='fuzzy,menuone,noinsert,popup'
+opt.autocomplete=true
+opt.pumheight=7
