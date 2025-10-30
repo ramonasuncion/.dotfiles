@@ -81,13 +81,21 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 })
 
 -- lsp diagnostics
-vim.diagnostic.config({ virtual_text = false })
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  float = {
+    border = "single",
+    source = "always",
+    header = "",
+    prefix = " "
+  },
+})
+vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    if vim.lsp.buf_is_attached(bufnr) then
-      vim.diagnostic.open_float()
-    end
+    vim.diagnostic.open_float(nil, { focusable = false })
   end,
 })
 
