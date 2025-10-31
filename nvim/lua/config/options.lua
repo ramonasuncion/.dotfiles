@@ -112,6 +112,6 @@ opt.matchtime=2
 
 -- autocomplete related
 opt.complete='.,o'
-opt.completeopt='fuzzy,menuone,noinsert,popup'
+opt.completeopt='fuzzy,menuone,noinsert,popup,noselect'
 opt.autocomplete=true
 opt.pumheight=7
