@@ -105,6 +105,9 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.opt_local.comments:remove("://")
     vim.opt_local.comments:append("f://")
+    vim.opt_local.cindent = true
+    vim.opt_local.cinoptions = "{0,}0,^0,:0,=0"
+    vim.opt_local.indentkeys:remove("0{")
   end
 })
 
