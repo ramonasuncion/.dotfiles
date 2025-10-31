@@ -1,0 +1,18 @@
+{
+  "plugins": {
+    "fzf-lua": {
+      "version": "'main'"
+    },
+    "mini.surround": {
+      "version": "'main'"
+    },
+    "nvim-autopairs": {
+      "rev": "7a2c97c",
+      "src": "https://github.com/windwp/nvim-autopairs.git"
+    },
+    "nvim-lspconfig": [],
+    "nvim-treesitter": {
+      "version": "'master'"
+    }
+  }
+}
