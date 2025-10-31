@@ -1,18 +1,11 @@
 -- lua/plugins/lspconfig.lua
-vim.keymap.set("i", "<CR>", function()
-  if vim.fn.pumvisible() == 1 then
-    return vim.api.nvim_replace_termcodes("<C-e><CR>", true, true, true)
-  else
-    return vim.api.nvim_replace_termcodes("<CR>", true, true, true)
-  end
-end, { expr = true })
-vim.keymap.set("i", "<Tab>", function()
-  if vim.fn.pumvisible() == 1 then
-    return vim.api.nvim_replace_termcodes("<C-y>", true, true, true)
-  else
-    return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
-  end
-end, { expr = true })
+
+-- tab autocomplete
+-- disable enter from clicking
+-- arrow and up arrow to move box
+-- int main()
+-- { <Shift-a> <Tab> should not bring up the menu}
+
 
 local on_attach = function(client, bufnr)
   local opts = { buffer = bufnr }
