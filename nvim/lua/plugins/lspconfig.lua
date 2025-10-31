@@ -1,4 +1,11 @@
 -- lua/plugins/lspconfig.lua
+vim.keymap.set("i", "<CR>", function()
+  if vim.fn.pumvisible() == 1 then
+    return vim.api.nvim_replace_termcodes("<C-e><CR>", true, true, true)
+  else
+    return vim.api.nvim_replace_termcodes("<CR>", true, true, true)
+  end
+end, { expr = true })
 vim.keymap.set("i", "<Tab>", function()
   if vim.fn.pumvisible() == 1 then
     return vim.api.nvim_replace_termcodes("<C-y>", true, true, true)
