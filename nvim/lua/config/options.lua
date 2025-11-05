@@ -115,3 +115,6 @@ opt.complete='.,o'
 opt.completeopt='fuzzy,menuone,noinsert,popup,noselect'
 opt.autocomplete=true
 opt.pumheight=7
+
+-- column
+opt.colorcolumn="79"
