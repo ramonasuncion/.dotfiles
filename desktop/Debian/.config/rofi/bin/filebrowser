@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rofi -show filebrowser -theme ~/.config/rofi/themes/filebrowser.rasi
