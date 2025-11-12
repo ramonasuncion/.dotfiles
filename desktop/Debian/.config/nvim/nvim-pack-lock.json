@@ -1,0 +1,27 @@
+{
+  "plugins": {
+    "fzf-lua": {
+      "rev": "fb654cb",
+      "src": "https://github.com/ibhagwan/fzf-lua",
+      "version": "'main'"
+    },
+    "mini.surround": {
+      "rev": "444e155",
+      "src": "https://github.com/nvim-mini/mini.surround",
+      "version": "'main'"
+    },
+    "nvim-lspconfig": {
+      "rev": "ececa53",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "42fc28ba",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'master'"
+    },
+    "tokyodark.nvim": {
+      "rev": "cc70a2f",
+      "src": "https://github.com/tiagovla/tokyodark.nvim"
+    }
+  }
+}
