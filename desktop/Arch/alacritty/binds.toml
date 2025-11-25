@@ -1,0 +1,5 @@
+[keyboard]
+bindings = [
+	{ key = "ArrowUp", mods = "Control", action = "ScrollLineUp" },
+	{ key = "ArrowDown", mods = "Control", action = "ScrollLineDown" },
+]

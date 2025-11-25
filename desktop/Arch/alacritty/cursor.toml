@@ -1,0 +1,10 @@
+[cursor.style]
+shape = "Beam"
+blinking = "Always"
+
+[cursor]
+blink_interval = 500
+blink_timeout = 0
+
+
+
