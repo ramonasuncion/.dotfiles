@@ -1,0 +1,26 @@
+Starting SwayNotificationCenter version swaync 0.12.3
+** Message: 05:10:38.059: configModel.vala:513: Loading Config: "/home/ramon/.config/swaync/config.json"
+An instance of SwayNotificationCenter is already running!
+
+(waybar:128225): Gtk-WARNING **: 05:10:47.272: Failed to parse /home/ramon/.config/gtk-3.0/settings.ini: Key file does not start with a group
+[2025-11-12 05:10:47.290] [info] Using configuration file /home/ramon/.config/waybar/config.jsonc
+[2025-11-12 05:10:47.291] [info] Unable to receive desktop appearance: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
+[2025-11-12 05:10:47.291] [info] Using CSS file /home/ramon/.config/waybar/style.css
+[2025-11-12 05:10:47.300] [warning] module sway/workspaces: Disabling module "sway/workspaces", Socket path is empty
+[2025-11-12 05:10:47.436] [info] Bar configured (width: 1280, height: 23) for output: eDP-1
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
+GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
+Could not connect to CC service. Will wait for connection...
