@@ -12,12 +12,12 @@ display_help() {
   echo "Usage: $SCRIPT_NAME [OPTIONS]"
   echo ""
   echo "Options:"
-  echo "  -h --help         Show this help message"
-  echo "  -v --version      Show the version and name of the script"
-  echo "  -c --config FILE  Specify a custom configuration file"
-  echo "  -p --preview      Show a preview where files will be moved"
-  echo "This script reads a config file and creates symlinks or hardlinks based on the configuration."
-  echo "The configuration file should specify 'path', 'type', 'target' and optional 'script'."
+  echo "  -h, --help        Show this help"
+  echo "  -v, --version     Show version"
+  echo "  -c, --config F    Use config file F"
+  echo "  -p, --preview     Preview only (no changes)"
+  echo ""
+  echo "Config: specify 'path', 'type', and 'target' in the config file."
 }
 
 for arg in "$@"; do
@@ -60,23 +60,17 @@ show_preview() {
   local path=$1
   local target=$2
   local link_type=$3
-  local script=$4
 
   if [[ -z "$path" || -z "$target" || -z "$link_type" ]]; then
     return
   fi
 
-  # FIXME: Running twice when script exists
-  if [[ "$link_type" = "symlink" && -z "$script" ]]; then
+  if [[ "$link_type" = "symlink" ]]; then
     echo "$target -> $path"
   fi
 
-  if [[ "$link_type" = "hardlink" && -z "$script" ]]; then
+  if [[ "$link_type" = "hardlink" ]]; then
     echo "$target"
-  fi
-
-  if [ -n "$script" ]; then
-    echo "bash $script"
   fi
 }
 
@@ -84,7 +78,6 @@ create_link() {
   local path=$1
   local target=$2
   local link_type=$3
-  local script=$4
 
   if [ -z "$target" ]; then
     echo "Error: target is empty!"
@@ -92,31 +85,29 @@ create_link() {
   fi
 
   if [ "$link_type" = "symlink" ]; then
-    if [ -L "$target" ] && [ "$(readlink '$target')" = "$path" ]; then
-      echo "Symlink '$target' already exists! Skipping..."
+    if [ -L "$target" ] && [ "$(readlink "$target")" = "$path" ]; then
       return
-    elif [ -e "$target" ]; then # file existence, ignore type.
-      echo "Removing existing '$target' and creating symlink."
+    elif [ -e "$target" ]; then
       rm -rf "$target"
     fi
     ln -sf "$path" "$target"
   elif [ "$link_type" = "hardlink" ]; then
+    # https://unix.stackexchange.com/questions/167610/determining-if-a-file-is-a-hard-link-or-symbolic-link
     if [ -e "$target" ]; then
-      echo "Hardlink '$target' already exists! Skipping..."
-      return
+      link_count=$(stat -f '%h' "$target")
+      if [ "$link_count" -gt 1 ]; then
+        return
+      else
+        rm -rf "$target"
+      fi
     fi
     ln "$path" "$target"
   else
-    echo "Unsupported link type: \"$link_type\""
+    echo "Error: unsupported link type: $link_type"
     exit 1
   fi
 
   # TODO: Install repos.
-
-  if [ -n "$script" ] && [ -f "$script" ]; then
-    echo "Running post-link script: $script"
-    bash $script
-  fi
 }
 
 while IFS= read -r line; do
@@ -131,7 +122,6 @@ while IFS= read -r line; do
     path=""
     target=""
     link_type=""
-    script=""
     continue
   fi
 
@@ -153,9 +143,6 @@ while IFS= read -r line; do
     target)
       target=$(eval echo "$value")
       ;;
-    script)
-      script="$value"
-      ;;
     *)
       echo "Unknown key: \"$key\""
       ;;
@@ -163,12 +150,11 @@ while IFS= read -r line; do
 
   # Create the link.
   if [[ -n "$path" && -n "$target" && -n "$link_type" && "$PREVIEW_MODE" -ne 0 ]]; then
-    create_link "$path" "$target" "$link_type" "$script"
+    create_link "$path" "$target" "$link_type"
     path=""
     target=""
     link_type=""
-    script=""
   else
-    show_preview "$path" "$target" "$link_type" "$script"
+    show_preview "$path" "$target" "$link_type"
   fi
 done < "$CONFIG_FILE"
