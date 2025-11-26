@@ -1,3 +1,4 @@
 nvim/undo
 nvim/colors/*
 !nvim/colors/.gitkeep
+**/.DS_Store
