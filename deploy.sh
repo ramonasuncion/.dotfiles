@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 
-SCRIPT_NAME="LinkCreator"
-SCRIPT_VERSION="1.0"
 DEFAULT_CONFIG_FILE="config.ini"
 CONFIG_FILE="$DEFAULT_CONFIG_FILE"
 
-# Directory where script loaded.
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
 display_help() {
-  echo "Usage: $SCRIPT_NAME [OPTIONS]"
+  echo "Usage: deploy.sh [OPTIONS]"
   echo ""
   echo "Options:"
   echo "  -h, --help        Show this help"
-  echo "  -v, --version     Show version"
   echo "  -c, --config F    Use config file F"
   echo "  -p, --preview     Preview only (no changes)"
   echo ""
@@ -24,10 +20,6 @@ for arg in "$@"; do
   case $arg in
     -h |--help)
       display_help
-      exit 0
-      ;;
-    -v | --version)
-      echo "$SCRIPT_NAME version $SCRIPT_VERSION"
       exit 0
       ;;
     -c | --config)
@@ -106,8 +98,6 @@ create_link() {
     echo "Error: unsupported link type: $link_type"
     exit 1
   fi
-
-  # TODO: Install repos.
 }
 
 while IFS= read -r line; do
@@ -125,11 +115,9 @@ while IFS= read -r line; do
     continue
   fi
 
-  # Get the key and value from each line.
+  # Parse path="$HOME/example.txt"
   key=$(echo "$line" | cut -d '=' -f 1)
   value=$(echo "$line" | cut -d '=' -f 2-)
-
-  # Remove leading/trailing whitespaces.
   key=$(echo "$key" | tr -d '[:space:]')
   value=$(echo "$value" | tr -d '[:space:]')
 
@@ -148,7 +136,6 @@ while IFS= read -r line; do
       ;;
   esac
 
-  # Create the link.
   if [[ -n "$path" && -n "$target" && -n "$link_type" && "$PREVIEW_MODE" -ne 0 ]]; then
     create_link "$path" "$target" "$link_type"
     path=""
