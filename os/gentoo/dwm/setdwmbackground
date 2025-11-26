@@ -1,2 +1,0 @@
-#!/bin/sh
-feh --no-fehbg --bg-fill 'ENTER_FULL_PATH_TO_IMAGE_HERE'

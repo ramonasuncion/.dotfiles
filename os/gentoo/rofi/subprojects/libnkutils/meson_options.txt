@@ -1,3 +1,0 @@
-option('uuid', type: 'boolean', value: false, description: 'nkutils uuid module')
-option('bindings', type: 'boolean', value: false, description: 'nkutils bindings module')
-option('git-work-tree', type: 'string', value: '', description: 'Git work tree directory')

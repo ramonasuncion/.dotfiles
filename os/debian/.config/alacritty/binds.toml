@@ -1,8 +1,0 @@
-[keyboard]
-
-bindings = [
-  { key = ";", mods = "Control", action = "CreateNewWindow" },
-  { key = "ArrowUp", mods = "Control", action = "ScrollLineUp" },
-  { key = "ArrowDown", mods = "Control", action = "ScrollLineDown" },
-  { key = ":", mods = "Control | Shift", command = "thunar" },
-]
