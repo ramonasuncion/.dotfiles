@@ -37,6 +37,15 @@
               tab-width 2
               select-active-regions nil)
 
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode 1)
+
+(setq whitespace-style '(face spaces space-mark tabs tab-mark trailing))
+(setq whitespace-display-mappings
+      '((space-mark 32 [183] [46])
+        (tab-mark   9  [187 9] [92 9])))
+(global-whitespace-mode 1)
+
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
