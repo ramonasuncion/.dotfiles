@@ -160,6 +160,11 @@
   (defalias #'forward-evil-word #'forward-evil-symbol)
   :hook (elpaca-after-init-hook . evil-mode))
 
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init 'dired))
+
 (use-package evil-surround 
 	     :after evil 
 	     :config (global-evil-surround-mode 1))
