@@ -1,6 +1,4 @@
--- local variables
 local opt = vim.opt
-local cmd = vim.cmd
 
 -- block cursor
 opt.guicursor = ""
@@ -38,9 +36,6 @@ opt.signcolumn='yes:1'
 
 -- enable mouse
 opt.mouse='a'
-
--- sign column
-opt.scl='no'
 
 -- set auto read whne a file is changed from outside
 opt.autoread=true
@@ -111,9 +106,7 @@ opt.showmatch=true
 opt.matchtime=2
 
 -- autocomplete related
-opt.complete='.,o'
-opt.completeopt='fuzzy,menuone,noinsert,popup,noselect'
-opt.autocomplete=true
+opt.completeopt='fuzzy,menuone,noinsert,popup'
 opt.pumheight=7
 
 -- column

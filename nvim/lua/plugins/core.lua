@@ -17,11 +17,9 @@ load("fzf")
 load("mini_surround")
 load("autopairs")
 
-local ts_parsers = { 'c', 'cpp' }
-local lsp_servers = { 'typos_lsp' }
+local ts_parsers = { 'c', 'cpp', 'python' }
 
 return {
   ts_parsers = ts_parsers,
-  lsp_servers = lsp_servers,
 }
 

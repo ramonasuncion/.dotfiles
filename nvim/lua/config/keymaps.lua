@@ -1,6 +1,3 @@
--- leader
-vim.g.mapleader=","
-
 -- move around splits (Ctrl+{j,k,l,h})
 vim.keymap.set('n', '<C-h>', '<C-w>h', { silent = true, desc = 'Move to left split' })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { silent = true, desc = 'Move to below split' })
