@@ -9,7 +9,9 @@ api.nvim_create_autocmd({ 'BufWritePre' }, {
   group = augroup('strip_space'),
   pattern = { '*' },
   callback = function()
+    local view = vim.fn.winsaveview()
     vim.cmd([[ %s/\s\+$//e ]])
+    vim.fn.winrestview(view)
   end,
 })
 
@@ -88,7 +90,7 @@ vim.diagnostic.config({
   update_in_insert = false,
   float = {
     border = "single",
-    source = "always",
+    source = true,
     header = "",
     prefix = " "
   },

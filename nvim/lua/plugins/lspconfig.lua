@@ -20,21 +20,37 @@ local on_attach = function(client, bufnr)
 
   local function pumvisible() return vim.fn.pumvisible() ~= 0 end
 
-  if client.supports_method('textDocument/completion') then
+  if client:supports_method('textDocument/completion') then
     vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
-    vim.opt.completeopt = { 'menu', 'menuone', 'noinsert' }
-    local chars = {}
-    for i = 32, 126 do table.insert(chars, string.char(i)) end
-    client.server_capabilities.completionProvider.triggerCharacters = chars
 
-    keymap('<CR>', function() return pumvisible() and '<C-e><CR>' or '<CR>' end, { expr = true }, 'i')
-    keymap('/', function() return pumvisible() and '<C-e>' or '/' end, { expr = true }, 'i')
+    -- trigger completion when typing keyword characters
+    vim.api.nvim_create_autocmd('InsertCharPre', {
+      buffer = bufnr,
+      callback = function()
+        if not pumvisible() and vim.v.char:match('[%w_]') then
+          vim.schedule(function() vim.lsp.completion.get() end)
+        end
+      end,
+    })
+
+    -- CR: accept if an item is selected, otherwise dismiss and newline
+    keymap('<CR>', function()
+      if pumvisible() then
+        local info = vim.fn.complete_info({ 'selected' })
+        if info.selected >= 0 then
+          return '<C-y>'
+        end
+        return '<C-e><CR>'
+      end
+      return '<CR>'
+    end, { expr = true }, 'i')
+
     keymap('<C-n>', function()
       if pumvisible() then
         feedkeys('<C-n>')
       else
         if next(vim.lsp.get_clients({ bufnr = 0 })) then
-          vim.lsp.completion.trigger()
+          vim.lsp.completion.get()
         else
           if vim.bo.omnifunc == '' then feedkeys('<C-x><C-n>') else feedkeys('<C-x><C-o>') end
         end
@@ -68,6 +84,15 @@ local on_attach = function(client, bufnr)
   end
 end
 
-vim.lsp.config('clangd', { cmd = { 'clangd' }, filetypes = { 'c', 'cpp' }, on_attach = on_attach })
-vim.lsp.enable('clangd')
+local servers = {
+  clangd = { filetypes = { 'c', 'cpp' } },
+  pyright = { cmd = { 'pyright-langserver', '--stdio' }, filetypes = { 'python' } },
+  typos_lsp = { cmd = { 'typos-lsp' }, filetypes = { '*' } },
+}
+
+for name, cfg in pairs(servers) do
+  cfg.on_attach = on_attach
+  vim.lsp.config(name, cfg)
+  vim.lsp.enable(name)
+end
 
