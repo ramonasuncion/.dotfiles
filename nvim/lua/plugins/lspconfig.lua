@@ -33,6 +33,8 @@ local on_attach = function(client, bufnr)
       end,
     })
 
+    keymap('/', function() return pumvisible() and '<C-e>/' or '/' end, { expr = true }, 'i')
+
     -- CR: accept if an item is selected, otherwise dismiss and newline
     keymap('<CR>', function()
       if pumvisible() then
