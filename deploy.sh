@@ -66,7 +66,7 @@ create_link() {
     # https://unix.stackexchange.com/questions/167610/determining-if-a-file-is-a-hard-link-or-symbolic-link
     if [ -e "$target" ]; then
       if [[ "$(uname)" == "Darwin" ]]; then
-        link_count=$(stat -f '%l' "$target")
+        link_count=$(stat -f '%h' "$target")
       else
         link_count=$(stat -c '%h' "$target")
       fi
