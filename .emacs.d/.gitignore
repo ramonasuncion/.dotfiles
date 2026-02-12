@@ -1,6 +1,13 @@
-auto-save-list/
-elpa/
-eln-cache/
 elpaca/
-recentf
+elpa/
+etc/
 var/
+eln-cache/
+auto-save-list/
+*.elc
+*~
+\#*\#
+.\#*
+custom.el
+recentf
+.DS_Store

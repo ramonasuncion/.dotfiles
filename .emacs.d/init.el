@@ -1,11 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 ;; based on github.com/valignatev/dotemacs/
 
-(setq package-enable-at-startup nil)
-
 (global-unset-key (kbd "C-x C-c"))
 (global-unset-key (kbd "C-h h"))
-(global-set-key (kbd "C-l") #'recenter-top-bottom)
 
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message user-login-name
@@ -20,31 +17,32 @@
       scroll-conservatively 101
       mouse-wheel-progressive-speed nil
       mouse-wheel-scroll-amount '(3)
-      frame-inhibit-implied-resize t
       pixel-scroll-precision-interpolate-page t
-      pixel-scroll-precision-mode t
       dired-dwim-target t
       read-process-output-max (* 1024 1024)
       vc-follow-symlinks t
       require-final-newline t
       save-interprogram-paste-before-kill t
       warning-minimum-level :error
-      gdb-many-windows t)
+      gdb-many-windows t
+      recentf-auto-cleanup 'never)
 
 (setq-default indent-tabs-mode nil
               truncate-lines t
               truncate-partial-width-windows nil
               tab-width 2
+              c-basic-offset 2
+              js-indent-level 2
+              python-indent-offset 4
               select-active-regions nil)
 
 (setq display-line-numbers-type 'relative)
-(global-display-line-numbers-mode 1)
+(add-hook 'after-init-hook
+          (lambda ()
+            (global-display-line-numbers-mode 1)
+            (global-whitespace-mode 1)))
 
-(setq whitespace-style '(face spaces space-mark tabs tab-mark trailing))
-(setq whitespace-display-mappings
-      '((space-mark 32 [183] [46])
-        (tab-mark   9  [187 9] [92 9])))
-(global-whitespace-mode 1)
+(add-hook 'dired-mode-hook (lambda () (whitespace-mode -1)))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -52,28 +50,25 @@
 (blink-cursor-mode 0)
 (show-paren-mode t)
 (column-number-mode 1)
-(recentf-mode 1)
+(setq recentf-max-saved-items 20
+      recentf-exclude '("/tmp/" "COMMIT_EDITMSG" ".*-autoloads\\.el\\'" " recentf"
+			"/build/" "/node_modules/" "/target/" "\\.o\\'" "\\.so\\'" "\\.dylib\\'"))
+
+(defun my/silent-recentf-mode ()
+  (let ((inhibit-message t))
+    (recentf-mode 1)))
+
+(run-with-idle-timer 2 nil #'my/silent-recentf-mode)
 (winner-mode 1)
 (global-auto-revert-mode t)
 (pixel-scroll-precision-mode t)
 (global-hl-line-mode t)
 
-(defalias 'yes-or-no-p #'y-or-n-p)
+(setq use-short-answers t)
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 
-(defun my/get-monitor-dpi () 96)
-
-(defvar font-name "Source Code Pro")
-(defvar font-size
-  (let ((dpi (my/get-monitor-dpi)))
-    (cond ((> dpi 180) 18)
-          ((> dpi 130) 16)
-          (t 14))))
-
-(add-to-list 'default-frame-alist `(font . ,(format "%s-%d" font-name font-size)))
-
 (when (display-graphic-p)
-  (set-frame-font (format "%s-%d" font-name font-size) nil t))
+  (set-face-attribute 'default nil :family "Source Code Pro" :height 140))
 
 (defun my/disable-bold-and-italic (theme &optional _no-confirm _no-enable)
   (mapc #'disable-theme (remq theme custom-enabled-themes))
@@ -124,16 +119,23 @@
 (elpaca use-package :demand t)
 (setq use-package-hook-name-suffix nil)
 (elpaca elpaca-use-package
-  (elpaca-use-package-mode)
-  (setq elpaca-use-package-by-default t))
+	(elpaca-use-package-mode)
+	(setq elpaca-use-package-by-default t))
 (elpaca-wait)
 
 (use-package no-littering
+  :demand t
   :config
-  (require 'no-littering)
   (savehist-mode))
 
+(use-package gcmh
+  :init
+  (setq gcmh-idle-delay 5
+        gcmh-high-cons-threshold (* 100 1024 1024))  ; 100mb
+  :hook (window-setup-hook . gcmh-mode))
+
 (use-package ef-themes
+  :demand t
   :init
   (setq ef-dream-palette-overrides
         '((bg-main      "#131015")
@@ -144,11 +146,32 @@
   :config
   (load-theme 'ef-dream t))
 
-(use-package flymake)
-(use-package transient)
-(use-package jsonrpc)
+(use-package which-key
+  :ensure nil
+  :config
+  (which-key-mode))
+
+(use-package corfu
+  :hook (elpaca-after-init-hook . global-corfu-mode)
+  :init
+  (setq corfu-auto t
+        corfu-auto-delay 0.2
+        corfu-auto-prefix 2
+        corfu-cycle t
+        corfu-preselect 'prompt))
+
+(use-package flymake
+  :ensure nil
+  :defer t)
+(use-package transient
+  :ensure nil
+  :defer t)
+(use-package jsonrpc
+  :ensure nil
+  :defer t)
 
 (use-package evil
+  :demand t
   :init
   (setq evil-default-state 'emacs
         evil-want-C-w-in-emacs-state t
@@ -165,59 +188,135 @@
   (evil-set-initial-state 'text-mode 'normal)
   (evil-set-initial-state 'conf-mode 'normal)
   (evil-set-initial-state 'fundamental-mode 'normal)
-  (evil-set-initial-state 'git-commit-mode 'emacs)
+  (evil-set-initial-state 'dired-mode 'normal)
   (defalias #'forward-evil-word #'forward-evil-symbol)
   :hook (elpaca-after-init-hook . evil-mode))
 
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-init 'dired))
+  (evil-collection-init))
 
-(use-package evil-surround 
-	     :after evil 
-	     :config (global-evil-surround-mode 1))
+(use-package evil-surround
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
 
-(use-package evil-exchange 
-	     :after evil 
-	     :config (evil-exchange-install))
+(use-package evil-exchange
+  :after evil
+  :config (evil-exchange-install))
 
-(use-package vertico 
-	     :init 
-	     (vertico-mode))
+(use-package multiple-cursors
+  :commands (mc/edit-lines mc/mark-next-like-this mc/mark-previous-like-this
+			   mc/mark-all-like-this mc/unmark-next-like-this mc/unmark-previous-like-this
+			   mc/mark-all-like-this-dwim set-rectangular-region-anchor
+			   mc/add-cursor-on-click mc/keyboard-quit)
+  :config
+  (setq mc/always-run-for-all t
+        mc/insert-numbers-default 0))
+
+(use-package vertico
+  :hook (elpaca-after-init-hook . vertico-mode))
 
 (use-package marginalia
-  :bind (:map minibuffer-local-map
-	      ("M-A" . marginalia-cycle))
-  :init
-  (marginalia-mode))
+  :hook (elpaca-after-init-hook . marginalia-mode))
 
 (use-package orderless
-  :init
+  :demand t
+  :config
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 
+(use-package deadgrep
+  :commands deadgrep)
+
 (use-package consult
-  :after (vertico xref)
+  :after vertico
   :config
   (setq xref-show-xrefs-function        #'consult-xref
         xref-show-definitions-function  #'consult-xref))
 
-(use-package consult-eglot 
-	     :after (consult eglot))
-(use-package eglot)
+(use-package yasnippet
+  :hook (prog-mode-hook . yas-minor-mode)
+  :config
+  (setq yas-snippet-revival nil
+        yas-also-auto-indent-first-line nil
+        yas-also-indent-empty-lines nil
+        yas-choose-keys-first nil
+        yas-choose-tables-first nil
+        yas-triggers-in-field t
+        yas-indent-line 'fixed
+        yas-verbosity 0)
+  (yas-reload-all))
+
+(use-package eglot
+  :ensure nil
+  :defer t
+  :hook ((python-mode-hook . eglot-ensure)
+         (c-mode-hook . eglot-ensure)
+         (c++-mode-hook . eglot-ensure)))
+
+(use-package consult-eglot
+  :after (consult eglot))
+
+(add-to-list 'auto-mode-alist '("Pipfile\\'" . conf-toml-mode))
+(add-to-list 'auto-mode-alist '("Pipfile\\.lock\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("requirements.txt\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.env\\.local\\'" . conf-mode))
+
+(use-package rainbow-mode
+  :hook ((css-mode-hook . rainbow-mode)
+         (html-mode-hook . rainbow-mode))
+  :config
+  (setq rainbow-x-colors nil
+        rainbow-html-colors t))
+
+(use-package editorconfig
+  :ensure nil
+  :config
+  (editorconfig-mode 1)
+  (setq editorconfig-trim-whitespaces-mode nil))
+
+;; Use GNU ls for dired (gls on macOS, ls on Linux)
+(setq insert-directory-program (or (executable-find "gls") (executable-find "ls")))
+(setq dired-use-ls-dired t)
+(setq dired-listing-switches "-lha")
 
 (use-package magit
-  :bind (("C-x g" . magit-status))
+  :commands (magit-status magit-blame magit-log magit-diff)
   :init
   (setq magit-diff-refine-hunk t
         git-commit-summary-max-length 73
         magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1
         magit-save-repository-buffers nil))
 
+(add-hook 'elpaca-after-init-hook
+          (lambda ()
+            (global-set-key (kbd "C-x g") #'magit-status)
+            (global-set-key (kbd "<f5>") #'deadgrep)
+            (global-set-key (kbd "C-S-c") #'mc/edit-lines)
+            (global-set-key (kbd "C-S-n") #'mc/mark-next-like-this)
+            (global-set-key (kbd "C-S-p") #'mc/mark-previous-like-this)
+            (global-set-key (kbd "C-S-a") #'mc/mark-all-like-this)
+            (global-set-key (kbd "C->") #'mc/unmark-next-like-this)
+            (global-set-key (kbd "C-<") #'mc/unmark-previous-like-this)
+            (global-set-key (kbd "C-c C-<") #'mc/mark-all-like-this-dwim)
+            (global-set-key (kbd "C-S-SPC") #'set-rectangular-region-anchor)
+            (global-set-key (kbd "M-<mouse-1>") #'mc/add-cursor-on-click)
+            (global-set-key (kbd "C-c s") #'consult-line)
+            (global-set-key (kbd "C-c S") #'consult-grep)
+            (global-set-key (kbd "C-c e") #'consult-recent-file)
+            ;; Flymake error navigation (like ]d / [d in neovim)
+            (with-eval-after-load 'evil
+              (evil-define-key 'normal 'global
+			       (kbd "]d") #'flymake-goto-next-error
+			       (kbd "[d") #'flymake-goto-prev-error))
+            (define-key minibuffer-local-map (kbd "M-A") #'marginalia-cycle)))
+
 (use-package git-link
-  :init 
+  :init
   (setq git-link-open-in-browser t))
 
 (defun my/edit-init-file () (interactive) (find-file user-init-file))
@@ -227,8 +326,13 @@
       (project-root proj)
     default-directory))
 
-(defvar my/terminal "urxvt")
-(defvar my/terminal-args nil)
+(defvar my/terminal (cond ((eq system-type 'darwin) "open")
+                          ((executable-find "alacritty") "alacritty")
+                          ((executable-find "kitty") "kitty")
+                          ((executable-find "gnome-terminal") "gnome-terminal")
+                          ((executable-find "urxvt") "urxvt")
+                          (t "xterm")))
+(defvar my/terminal-args (when (eq system-type 'darwin) '("-a" "Terminal")))
 
 (defun my/terminal-in-project-root (&optional arg)
   (interactive "P")
@@ -240,8 +344,42 @@
 
 (defun my/recompile ()
   (interactive)
-  (cd (my/project-root-or-default-dir))
-  (recompile))
+  (let ((default-directory (my/project-root-or-default-dir)))
+    (recompile)))
+
+(defun my/build-project ()
+  (interactive)
+  (let ((default-directory (my/project-root-or-default-dir)))
+    (cond
+     ((file-exists-p "Makefile")
+      (compile "make"))
+     ((file-exists-p "CMakeLists.txt")
+      (unless (file-exists-p "build")
+        (make-directory "build"))
+      (let ((default-directory (expand-file-name "build" default-directory)))
+        (compile "cmake .. && make")))
+     (t
+      (message "No Makefile or CMakeLists.txt found")))))
+
+(defun my/run-project ()
+  (interactive)
+  (let* ((project-dir (my/project-root-or-default-dir))
+         (default-directory project-dir))
+    (cond
+     ;; Python
+     ((file-exists-p "main.py")
+      (async-shell-command "python main.py" "*run-output*"))
+     ;; C/C++ executables
+     ((and (file-exists-p "./main") (file-executable-p "./main"))
+      (async-shell-command "./main" "*run-output*"))
+     ((and (file-exists-p "./a.out") (file-executable-p "./a.out"))
+      (async-shell-command "./a.out" "*run-output*"))
+     ((and (file-exists-p "./build/main") (file-executable-p "./build/main"))
+      (async-shell-command "./build/main" "*run-output*"))
+     ;; Ask user for command
+     (t
+      (let ((command (read-string "Run command: ")))
+        (async-shell-command command "*run-output*"))))))
 
 (defun my/copy-file-name ()
   (interactive)
@@ -254,16 +392,30 @@
   (kill-new default-directory)
   (message "%s" default-directory))
 
-(global-set-key (kbd "C-x t")   #'my/terminal-in-project-root)
+(global-set-key (kbd "C-x C-m") #'execute-extended-command)
+(global-set-key (kbd "C-x m")   #'execute-extended-command)
+(global-set-key (kbd "C-c t")   #'my/terminal-in-project-root)
 (global-set-key (kbd "<f7>")    #'my/recompile)
+(global-set-key (kbd "C-c b")   #'my/build-project)
+(global-set-key (kbd "C-c r")   #'my/run-project)
 (global-set-key (kbd "C-c f")   #'my/copy-file-name)
 (global-set-key (kbd "C-c d")   #'my/copy-pwd)
+
+;; macOS-specific keybindings
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'meta
+        mac-option-modifier 'super
+        mac-right-command-modifier 'meta
+        mac-right-option-modifier 'super)
+  ;; Make Command+V work in terminal
+  (setq xterm-extra-capabilities '("clipboard" "color" "sixel")))
 
 (global-set-key (kbd "S-<wheel-up>")   (lambda () (interactive) (scroll-right 5)))
 (global-set-key (kbd "S-<wheel-down>") (lambda () (interactive) (scroll-left 5)))
 
-(add-to-list 'default-frame-alist '(background-color . "#131015"))
-(add-to-list 'default-frame-alist '(foreground-color . "#ffffff"))
-
-(provide 'init)
+(use-package lua-mode
+  :mode "\\.lua\\'"
+  :interpreter "lua"
+  :config
+  (setq lua-indent-level 4))
 
