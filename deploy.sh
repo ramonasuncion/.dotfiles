@@ -4,6 +4,7 @@ DEFAULT_CONFIG_FILE="config.ini"
 CONFIG_FILE="$DEFAULT_CONFIG_FILE"
 
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
+PREVIEW_MODE=1
 
 display_help() {
   echo "Usage: deploy.sh [OPTIONS]"
@@ -86,7 +87,11 @@ create_link() {
   elif [ "$link_type" = "hardlink" ]; then
     # https://unix.stackexchange.com/questions/167610/determining-if-a-file-is-a-hard-link-or-symbolic-link
     if [ -e "$target" ]; then
-      link_count=$(stat -f '%h' "$target")
+      if [[ "$(uname)" == "Darwin" ]]; then
+        link_count=$(stat -f '%l' "$target")
+      else
+        link_count=$(stat -c '%h' "$target")
+      fi
       if [ "$link_count" -gt 1 ]; then
         return
       else
@@ -136,12 +141,14 @@ while IFS= read -r line; do
       ;;
   esac
 
-  if [[ -n "$path" && -n "$target" && -n "$link_type" && "$PREVIEW_MODE" -ne 0 ]]; then
-    create_link "$path" "$target" "$link_type"
+  if [[ -n "$path" && -n "$target" && -n "$link_type" ]]; then
+    if [[ "$PREVIEW_MODE" -eq 0 ]]; then
+      show_preview "$path" "$target" "$link_type"
+    else
+      create_link "$path" "$target" "$link_type"
+    fi
     path=""
     target=""
     link_type=""
-  else
-    show_preview "$path" "$target" "$link_type"
   fi
 done < "$CONFIG_FILE"
