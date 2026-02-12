@@ -87,7 +87,7 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = {
-  clangd = { filetypes = { 'c', 'cpp' } },
+  clangd = { cmd = { '/usr/bin/clangd' }, filetypes = { 'c', 'cpp' } },
   pyright = { cmd = { 'pyright-langserver', '--stdio' }, filetypes = { 'python' } },
   typos_lsp = { cmd = { 'typos-lsp' }, filetypes = { '*' } },
 }
