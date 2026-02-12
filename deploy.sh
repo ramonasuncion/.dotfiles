@@ -4,7 +4,6 @@ DEFAULT_CONFIG_FILE="config.ini"
 CONFIG_FILE="$DEFAULT_CONFIG_FILE"
 
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
-PREVIEW_MODE=1
 
 display_help() {
   echo "Usage: deploy.sh [OPTIONS]"
@@ -12,7 +11,6 @@ display_help() {
   echo "Options:"
   echo "  -h, --help        Show this help"
   echo "  -c, --config F    Use config file F"
-  echo "  -p, --preview     Preview only (no changes)"
   echo ""
   echo "Config: specify 'path', 'type', and 'target' in the config file."
 }
@@ -32,10 +30,6 @@ for arg in "$@"; do
       fi
       break
       ;;
-    -p | --preview)
-      PREVIEW_MODE=0
-      break
-      ;;
     *)
       echo "Unknown option: $arg"
       display_help
@@ -49,24 +43,6 @@ if [ ! -f "$CONFIG_FILE" ]; then
   exit 1
 fi
 
-show_preview() {
-  local path=$1
-  local target=$2
-  local link_type=$3
-
-  if [[ -z "$path" || -z "$target" || -z "$link_type" ]]; then
-    return
-  fi
-
-  if [[ "$link_type" = "symlink" ]]; then
-    echo "$target -> $path"
-  fi
-
-  if [[ "$link_type" = "hardlink" ]]; then
-    echo "$target"
-  fi
-}
-
 create_link() {
   local path=$1
   local target=$2
@@ -79,26 +55,30 @@ create_link() {
 
   if [ "$link_type" = "symlink" ]; then
     if [ -L "$target" ] && [ "$(readlink "$target")" = "$path" ]; then
+      echo "$target -> $path (already exists)"
       return
     elif [ -e "$target" ]; then
       rm -rf "$target"
     fi
     ln -sf "$path" "$target"
+    echo "$target -> $path"
   elif [ "$link_type" = "hardlink" ]; then
     # https://unix.stackexchange.com/questions/167610/determining-if-a-file-is-a-hard-link-or-symbolic-link
     if [ -e "$target" ]; then
       if [[ "$(uname)" == "Darwin" ]]; then
-        link_count=$(stat -f '%l' "$target")
+        link_count=$(stat -f '%h' "$target")
       else
         link_count=$(stat -c '%h' "$target")
       fi
       if [ "$link_count" -gt 1 ]; then
+        echo "$target (already exists)"
         return
       else
         rm -rf "$target"
       fi
     fi
     ln "$path" "$target"
+    echo "$target => $path"
   else
     echo "Error: unsupported link type: $link_type"
     exit 1
@@ -142,11 +122,7 @@ while IFS= read -r line; do
   esac
 
   if [[ -n "$path" && -n "$target" && -n "$link_type" ]]; then
-    if [[ "$PREVIEW_MODE" -eq 0 ]]; then
-      show_preview "$path" "$target" "$link_type"
-    else
-      create_link "$path" "$target" "$link_type"
-    fi
+    create_link "$path" "$target" "$link_type"
     path=""
     target=""
     link_type=""
