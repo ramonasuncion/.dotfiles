@@ -280,7 +280,7 @@
 
 ;; Use GNU ls for dired (gls on macOS, ls on Linux)
 (setq insert-directory-program (or (executable-find "gls") (executable-find "ls")))
-(setq dired-use-ls-dired t)
+(setq dired-use-ls-dired (if (executable-find "gls") t nil))
 (setq dired-listing-switches "-lha")
 
 (use-package magit
