@@ -164,7 +164,6 @@
   :ensure nil
   :defer t)
 (use-package transient
-  :ensure nil
   :defer t)
 (use-package jsonrpc
   :ensure nil
