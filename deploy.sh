@@ -63,21 +63,8 @@ create_link() {
     ln -sf "$path" "$target"
     echo "$target -> $path"
   elif [ "$link_type" = "hardlink" ]; then
-    # https://unix.stackexchange.com/questions/167610/determining-if-a-file-is-a-hard-link-or-symbolic-link
-    if [ -e "$target" ]; then
-      if [[ "$(uname)" == "Darwin" ]]; then
-        link_count=$(stat -f '%h' "$target")
-      else
-        link_count=$(stat -c '%h' "$target")
-      fi
-      if [ "$link_count" -gt 1 ]; then
-        echo "$target (already exists)"
-        return
-      else
-        rm -rf "$target"
-      fi
-    fi
-    ln "$path" "$target"
+    # Force the link. Too much trouble to see if it already exists.
+    ln -f "$path" "$target"
     echo "$target => $path"
   else
     echo "Error: unsupported link type: $link_type"
