@@ -1,0 +1,1 @@
+/home/ramon/Documents/ceramic/editor-support/vim/syntax/ceramic.vim

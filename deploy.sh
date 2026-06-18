@@ -2,6 +2,7 @@
 
 DEFAULT_CONFIG_FILE="config.ini"
 CONFIG_FILE="$DEFAULT_CONFIG_FILE"
+DRY_RUN=0
 
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
@@ -10,6 +11,7 @@ display_help() {
   echo ""
   echo "Options:"
   echo "  -h, --help        Show this help"
+  echo "  -n, --dry-run     Print actions without making changes"
   echo "  -c, --config F    Use config file F"
   echo ""
   echo "Config: specify 'path', 'type', and 'target' in the config file."
@@ -20,6 +22,9 @@ for arg in "$@"; do
     -h |--help)
       display_help
       exit 0
+      ;;
+    -n | --dry-run)
+      DRY_RUN=1
       ;;
     -c | --config)
       shift
@@ -57,12 +62,19 @@ create_link() {
     if [ -L "$target" ] && [ "$(readlink "$target")" = "$path" ]; then
       echo "$target -> $path (already exists)"
       return
-    elif [ -e "$target" ]; then
-      rm -rf "$target"
     fi
+    if [ "$DRY_RUN" = "1" ]; then
+      echo "$target -> $path (dry run)"
+      return
+    fi
+    [ -e "$target" ] && rm -rf "$target"
     ln -sf "$path" "$target"
     echo "$target -> $path"
   elif [ "$link_type" = "hardlink" ]; then
+    if [ "$DRY_RUN" = "1" ]; then
+      echo "$target => $path (dry run)"
+      return
+    fi
     # Force the link. Too much trouble to see if it already exists.
     ln -f "$path" "$target"
     echo "$target => $path"
