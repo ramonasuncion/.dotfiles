@@ -6,7 +6,7 @@ clue.setup({
     { mode = 'v', keys = '<leader>' },
   },
   clues = {
-    { mode = 'n', keys = '<leader>h', desc = 'haskell' },
+    { mode = 'n', keys = '<leader>h', desc = 'haskell repl' },
     clue.gen_clues.g(),
     clue.gen_clues.z(),
   },
