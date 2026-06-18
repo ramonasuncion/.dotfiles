@@ -5,6 +5,8 @@ vim.pack.add({
   { src = "https://github.com/ibhagwan/fzf-lua", version = "main" },
   { src = "https://github.com/nvim-mini/mini.surround", version = "main" },
   { src = "https://github.com/windwp/nvim-autopairs.git"},
+  { src = "https://github.com/Vigemus/iron.nvim" },
+  { src = "https://github.com/nvim-mini/mini.clue" },
 })
 
 local function load(pkg)
@@ -16,6 +18,8 @@ load("treesitter")
 load("fzf")
 load("mini_surround")
 load("autopairs")
+load("iron")
+load("miniclue")
 
 local ts_parsers = { 'c', 'cpp', 'python' }
 
