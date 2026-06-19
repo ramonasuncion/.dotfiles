@@ -90,6 +90,7 @@ local servers = {
   clangd = { cmd = { '/usr/bin/clangd' }, filetypes = { 'c', 'cpp' } },
   pyright = { cmd = { 'pyright-langserver', '--stdio' }, filetypes = { 'python' } },
   typos_lsp = { cmd = { 'typos-lsp' }, filetypes = { '*' } },
+  hls = { cmd = { 'haskell-language-server-wrapper', '--lsp' }, filetypes = { 'haskell', 'lhaskell' } },
 }
 
 for name, cfg in pairs(servers) do

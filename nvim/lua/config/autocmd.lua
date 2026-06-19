@@ -97,7 +97,9 @@ vim.diagnostic.config({
 })
 vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
-    vim.diagnostic.open_float(nil, { focusable = false })
+    if vim.diagnostic.is_enabled({ bufnr = 0 }) then
+      vim.diagnostic.open_float(nil, { focusable = false })
+    end
   end,
 })
 

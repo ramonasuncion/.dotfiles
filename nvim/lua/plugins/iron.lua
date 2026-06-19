@@ -38,3 +38,6 @@ vim.keymap.set('n', '<leader>he', function()
   local expr = vim.fn.input('ghci> ')
   if expr ~= '' then iron.send('haskell', expr) end
 end, { desc = 'eval expression' })
+vim.keymap.set('n', '<leader>hd', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 }), { bufnr = 0 })
+end, { desc = 'toggle diagnostics' })
